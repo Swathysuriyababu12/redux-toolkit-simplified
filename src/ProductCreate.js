@@ -2,9 +2,13 @@ import axios from "axios";
 import { useFormik } from "formik";
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { createProduct } from "./reducer";
+
+import { useDispatch, useSelector } from "react-redux";
 
 function ProductCreate() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const formik = useFormik({
     initialValues: {
       title: "",
@@ -36,14 +40,18 @@ function ProductCreate() {
 
       return error;
     },
-    onSubmit : async (values) => {
+    onSubmit: async (values) => {
       try {
-        await axios.post(`https://6461c1c2491f9402f4aa0565.mockapi.io/products`,values)
-        navigate("/portal/products")
+        await axios.post(
+          `https://6461c1c2491f9402f4aa0565.mockapi.io/products`,
+          values
+        );
+        dispatch(createProduct(values));
+        navigate("/portal/products");
       } catch (error) {
-        alert("Somethign went wrong")
+        alert("Somethign went wrong");
       }
-    }
+    },
   });
   return (
     <div className="container">

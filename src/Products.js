@@ -2,12 +2,13 @@ import React, { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import useProduct from "./useProduct";
 import axios from "axios";
-import { getProducts } from "./reducer";
+import { getProducts, deleteProduct } from "./reducer";
 
 import { useDispatch, useSelector } from "react-redux";
 
 function Products() {
   const [searchParams, setSearchParams] = useSearchParams();
+  const { products } = useSelector((state) => state.app);
   const dispatch = useDispatch();
   //const selector = useSelector();
 
@@ -18,6 +19,7 @@ function Products() {
     const products = await axios.get(
       "https://6461c1c2491f9402f4aa0565.mockapi.io/products"
     );
+    console.log(products.data);
     dispatch(getProducts(products.data));
   };
 
@@ -29,7 +31,7 @@ function Products() {
       // On Destroy
       console.log("Product Component Destroy");
     };
-  }, []);
+  }, [products]);
 
   useEffect(() => {
     console.log("Count Updated");
@@ -43,7 +45,7 @@ function Products() {
     console.log(key);
     console.log(value);
   });
-  const { products } = useSelector((state) => state.app);
+
   console.log(products);
 
   let search = () => {
@@ -57,7 +59,7 @@ function Products() {
         await axios.delete(
           `https://6461c1c2491f9402f4aa0565.mockapi.io/products/${id}`
         );
-        getData();
+        dispatch(deleteProduct(id));
       }
     } catch (error) {
       alert("Something went wrong");

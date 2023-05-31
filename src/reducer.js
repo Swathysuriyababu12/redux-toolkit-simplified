@@ -21,6 +21,7 @@ export const getProductsSlice = createSlice({
   name: "getAllProducts",
   initialState: {
     products: [],
+    singleProduct: [],
     loading: false,
     error: null,
   },
@@ -29,7 +30,28 @@ export const getProductsSlice = createSlice({
       state.loading = true;
       state.products = action.payload;
     },
+    createProduct: (state, action) => {
+      state.loading = false;
+      state.products.push(action.payload);
+    },
+    getSingleProduct: (state, action) => {
+      state.loading = false;
+
+      state.singleProduct = state.products.filter(
+        (ele) => ele.id == action.payload
+      );
+      console.log(state.singleProduct);
+    },
+    deleteProduct: (state, action) => {
+      state.loading = false;
+
+      state.singleProduct = state.products.filter(
+        (ele) => ele.id != action.payload
+      );
+      console.log(state.singleProduct);
+    },
   },
 });
 
-export const { getProducts } = getProductsSlice.actions;
+export const { getProducts, createProduct, getSingleProduct, deleteProduct } =
+  getProductsSlice.actions;

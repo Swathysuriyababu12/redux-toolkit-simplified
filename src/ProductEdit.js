@@ -2,10 +2,14 @@ import axios from "axios";
 import { useFormik } from "formik";
 import React, { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { editProduct } from "./reducer";
+
+//import { useDispatch, useSelector } from "react-redux";
 
 function ProductEdit() {
   const { id } = useParams();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+
   const formik = useFormik({
     initialValues: {
       title: "",
@@ -43,7 +47,9 @@ function ProductEdit() {
           `https://6461c1c2491f9402f4aa0565.mockapi.io/products/${id}`,
           values
         );
-        navigate("/portal/products")
+        console.log(values);
+
+        navigate("/portal/products");
       } catch (error) {
         alert("Something went wrong");
       }
